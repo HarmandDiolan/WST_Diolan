@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Subject;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 
@@ -14,9 +15,11 @@ class StudentController extends Controller
     public function index()
     {
         $studentList = Student::all();
+        $subjectList = Subject::all();
 
         return view('admin.student.students', [
-            'studentList' => $studentList
+            'studentList' => $studentList,
+            'subjectList' => $subjectList
         ]);
     }
 
@@ -25,7 +28,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('admin.student.create');
+        return view('student.create');
     }
 
     /**
@@ -50,11 +53,12 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+
         if (request()->expectsJson()) {
             return response()->json($student);
         }
 
-        return view("admin.student.students", [
+        return view("student.students", [
             "student" => $student
         ]);
     }
@@ -64,7 +68,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view("admin.student.edit", [
+        return view("student.edit", [
             "student" => $student
         ]);
     }
@@ -77,7 +81,7 @@ class StudentController extends Controller
         $student->update($request->validated());
         
         return redirect()
-            ->route('admin.student.index')
+            ->route('student.index')
             ->with([
                 'confirmationMessage' => 'Student updated successfully.',
                 'alertType' => 'success'
@@ -92,7 +96,7 @@ class StudentController extends Controller
         $student->delete();
 
         return redirect()
-            ->route('admin.student.index')
+            ->route('student.index')
             ->with([
                 'confirmationMessage' => 'Student Deleted Successfully.',
                 'alertType' => 'success'

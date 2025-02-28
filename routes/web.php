@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\EnrollmentController;
+use App\Models\Enrollment;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 
@@ -33,7 +35,7 @@ Route::get('/dashboard', function () {
 // Use Route::resource() for StudentController
 Route::resource('student', StudentController::class)->middleware(['auth']);
 Route::resource('subject', SubjectController::class)->middleware(['auth']);
-
+Route::resource('enrollments', EnrollmentController::class)->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

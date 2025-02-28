@@ -26,7 +26,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view('admin.subject.create');
+        return view('subject.create');
     }
 
     /**
@@ -54,7 +54,7 @@ class SubjectController extends Controller
             return response()->json($subject);
         }
 
-        return view("admin.subject.subjects", [
+        return view("subject.subjects", [
             'subject' => $subject
         ]);
     }
@@ -64,7 +64,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('admin.subject.edit',[
+        return view('subject.edit',[
             'subject' > $subject
         ]);
     }
@@ -77,7 +77,7 @@ class SubjectController extends Controller
         $subject->update($request->validated());
         
         return redirect()
-            ->route('admin.subject.index')
+            ->route('subject.index')
             ->with([
                 'confirmationMessage' => 'Subject has been updated successfully.',
                 'alertType' => 'success'
@@ -92,7 +92,7 @@ class SubjectController extends Controller
         $subject->delete();
 
         return redirect()
-            ->route('admin.subject.index')
+            ->route('subject.index')
             ->with([
                 'confirmationMessage' => 'Subject has been deleted.' ,
                 'alertType' => 'successs'

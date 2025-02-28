@@ -44,20 +44,24 @@
                             <td>{{ $student->name }}</td>
                             <td>{{ $student->address }}</td>
                             <td>
-                                <!-- View Button triggers the modal -->
-                                <a href="#" data-id="{{ $student->id }}" class="viewStudent" data-toggle="modal" data-target="#viewStudentModal">
-                                    <i class="fa-solid fa-eye"></i>&nbsp;
-                                </a>
-                                <a href="#" data-id="{{ $student->id }}" class="editStudent" data-bs-toggle="modal" data-bs-target="#editStudentModal">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#" onclick="deleteStudent('{{ $student->id }}')">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>&nbsp;
-                                <form method="POST" action="{{route('student.destroy', $student->id)}}" id="student-form-{{$student->id}}">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <a href="#" data-id="{{ $student->id }}" class="viewStudent" data-toggle="modal" data-target="#viewStudentModal">
+                                        <i class="fa-solid fa-eye me-2"></i>
+                                    </a>
+                                    <a href="#" data-id="{{ $student->id }}" class="editStudent" data-bs-toggle="modal" data-bs-target="#editStudentModal">
+                                        <i class="fa-solid fa-pencil me-2"></i>
+                                    </a>
+                                    <a href="#" onclick="deleteStudent('{{ $student->id }}')">
+                                        <i class="fa-solid fa-trash me-2"></i>
+                                    </a>
+                                    <form method="POST" action="{{route('student.destroy', $student->id)}}" id="student-form-{{$student->id}}" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <a href="#" class="enrollStudent" data-id="{{ $student->id }}" data-bs-toggle="modal" data-bs-target="#enrollStudentModal">
+                                        <i class="fa fa-sign-in me-2"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -83,6 +87,7 @@
 @include('modal.view')
 @include('modal.edit')
 @include('modal.create')
+@include('modal.enroll', ['subjectList' => $subjectList])
 
 @section('scripts')
 <script>
@@ -184,6 +189,41 @@
             });
         });
     });
+
+    $(document).ready(function () {
+    // Open the modal and set student ID
+    $('.enrollStudent').click(function (e) {
+        e.preventDefault();
+        var studentId = $(this).data('id');
+        $('#enrollStudentId').val(studentId);
+        $('#enrollStudentModal').modal('show');
+    });
+
+    // Submit enrollment via AJAX
+    $('#enrollStudentForm').submit(function (e) {
+        e.preventDefault();
+
+        var formData = $(this).serialize(); // Serialize form data
+        var url = "{{ route('enrollments.store') }}"; // Get route
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                alert("Enrollment successful!");
+                $('#enrollStudentModal').modal('hide'); // Hide modal
+                location.reload(); // Refresh page
+            },
+            error: function (xhr) {
+                alert("Enrollment failed: " + xhr.responseText);
+                console.log("Enrollment failed: " +xhr.responseText);
+            }
+        });
+    });
+});
+
+
 
 </script>
 

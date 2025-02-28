@@ -16,5 +16,13 @@ class Student extends Model
         'email',
         'age',
     ];
+
+    public function enrollments(){
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function subject(){
+        return $this->belongsToMany(Subject::class, 'enrollments', 'student_id', 'subject_id');
+    }
     
 }

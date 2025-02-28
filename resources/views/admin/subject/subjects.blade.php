@@ -15,7 +15,7 @@
     </p>
     
     <div id="confirmationMessage" class="alert d-none"></div>
-    @include('student.confirmation')
+    @include('admin.student.confirmation')
     
 
     <!-- DataTales Example -->

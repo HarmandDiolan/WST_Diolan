@@ -15,7 +15,7 @@ class StudentController extends Controller
     {
         $studentList = Student::all();
 
-        return view('student.students', [
+        return view('admin.student.students', [
             'studentList' => $studentList
         ]);
     }
@@ -25,7 +25,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('student.create');
+        return view('admin.student.create');
     }
 
     /**
@@ -54,7 +54,7 @@ class StudentController extends Controller
             return response()->json($student);
         }
 
-        return view("student.students", [
+        return view("admin.student.students", [
             "student" => $student
         ]);
     }
@@ -64,7 +64,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view("student.edit", [
+        return view("admin.student.edit", [
             "student" => $student
         ]);
     }
@@ -77,7 +77,7 @@ class StudentController extends Controller
         $student->update($request->validated());
         
         return redirect()
-            ->route('student.index')
+            ->route('admin.student.index')
             ->with([
                 'confirmationMessage' => 'Student updated successfully.',
                 'alertType' => 'success'
@@ -92,7 +92,7 @@ class StudentController extends Controller
         $student->delete();
 
         return redirect()
-            ->route('student.index')
+            ->route('admin.student.index')
             ->with([
                 'confirmationMessage' => 'Student Deleted Successfully.',
                 'alertType' => 'success'

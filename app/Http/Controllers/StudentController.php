@@ -102,4 +102,11 @@ class StudentController extends Controller
                 'alertType' => 'success'
             ]);
     }
+
+    public function getStudentsBySection($sectionCode)
+    {
+        $students = Student::where('section_code', $sectionCode)->get();
+        
+        return response()->json(['students' => $students]);
+    }
 }

@@ -18,11 +18,16 @@ class EnrollmentController extends Controller
         $students = Student::all();
         $subjects = Subject::all();
 
-        return view('admin.student.students', [
+        return view('admin.enrolled.enrolledStudent', [
             'studentList' => $students,
             'subjectList' => $subjects
         ]);
         dd($subjectList);
+    }
+
+    public function enrolledStud()
+    {   
+        return view('admin.enrolled.enrolledStudent');
     }
 
     /**
@@ -53,6 +58,31 @@ class EnrollmentController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function getEnrolledStudents($sectionCode)
+    {
+        $enrollments = Enrollment::whereHas('subject', function ($query) use ($sectionCode) {
+            $query->where('sectionCode', $sectionCode);
+        })->with(['student', 'subject'])->get();
+    
+        if ($enrollments->isEmpty()) {
+            return response()->json(['students' => []]); // Return empty array if no students found
+        }
+    
+        return response()->json([
+            'students' => $enrollments->map(function ($enrollment) {
+                return [
+                    'id' => $enrollment->student->id,
+                    'name' => $enrollment->student->name,
+                    'subjectCode' => $enrollment->subject->subjectCode,
+                    'description' => $enrollment->subject->description,
+                    'units' => $enrollment->subject->units
+                ];
+            })
+        ]);
+
+        dd($enrollments);
     }
 
     /**

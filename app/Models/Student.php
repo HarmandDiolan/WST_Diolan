@@ -18,11 +18,7 @@ class Student extends Model
     ];
 
     public function enrollments(){
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(Enrollment::class, 'student_id');
     }
 
-    public function subject(){
-        return $this->belongsToMany(Subject::class, 'enrollments', 'student_id', 'subject_id');
-    }
-    
 }

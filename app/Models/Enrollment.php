@@ -13,10 +13,10 @@ class Enrollment extends Model
     protected $fillable = ['student_id', 'subject_id', 'status'];
 
     public function student(){
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     public function subject(){
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Subject::class, 'subject_id');
     }
 }

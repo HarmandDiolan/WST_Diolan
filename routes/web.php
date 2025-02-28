@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 Route::resource('student', StudentController::class)->middleware(['auth']);
 Route::resource('subject', SubjectController::class)->middleware(['auth']);
 Route::resource('enrollments', EnrollmentController::class)->middleware(['auth']);
+Route::get('/fetch-students/{sectionCode}', [EnrollmentController::class, 'getEnrolledStudents']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

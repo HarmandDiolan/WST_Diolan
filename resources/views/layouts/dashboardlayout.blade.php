@@ -104,6 +104,13 @@
                 </a>
             </li>
 
+            <li class="nav-item " >
+                <a class="nav-link" href="{{ route('grades.index') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Grade</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -354,7 +361,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
-
+    
     @yield('actives')
     @yield('content')
     @yield('scripts')

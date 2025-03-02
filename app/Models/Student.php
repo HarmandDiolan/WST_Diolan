@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    /** @use HasFactory<\Database\Factories\StudentFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -17,8 +16,14 @@ class Student extends Model
         'age',
     ];
 
-    public function enrollments(){
+    public function enrollments()
+    {
         return $this->hasMany(Enrollment::class, 'student_id');
     }
 
+    public function grades()
+    {
+        return $this->hasMany(Grade::class, 'student_id');
+    }
 }
+

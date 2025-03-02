@@ -24,7 +24,7 @@ class StoreSubjectRequest extends FormRequest
         return [
             'subjectCode' => 'required|string|max:225',
             'sectionCode' => 'required|string|max:225|unique:subjects,sectionCode',
-            'description' => 'required|string|max:225',
+            'description' => 'required|string|max:225|unique:subjects,description',
             'units' => 'required|integer',
         ];
     }

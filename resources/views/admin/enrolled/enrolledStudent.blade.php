@@ -48,7 +48,6 @@
                             <th>Subject Code</th>
                             <th>Subject Description</th>
                             <th>Units</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="studentTableBody">
@@ -61,7 +60,6 @@
         </div>
     </div>
 </div>
-
 <!-- JavaScript for Fetching Students -->
 <script>
     function fetchStudents(sectionCode) {
@@ -81,7 +79,6 @@
                                 <td>${student.subjectCode}</td>
                                 <td>${student.description}</td>
                                 <td>${student.units}</td>
-                                <td><button class="btn btn-danger btn-sm">Remove</button> <button class="btn btn-primary btn-sm">Grade</button></td>
                             </tr>
                         `;
                     });
@@ -94,6 +91,7 @@
                 studentTableBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading students</td></tr>';
             });
     }
+
 </script>
 
 @endsection

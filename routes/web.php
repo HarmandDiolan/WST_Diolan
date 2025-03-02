@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\GradeController;
 use App\Models\Enrollment;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -36,6 +37,7 @@ Route::get('/dashboard', function () {
 Route::resource('student', StudentController::class)->middleware(['auth']);
 Route::resource('subject', SubjectController::class)->middleware(['auth']);
 Route::resource('enrollments', EnrollmentController::class)->middleware(['auth']);
+Route::resource('grades', GradeController::class)->middleware(['auth']);
 Route::get('/fetch-students/{sectionCode}', [EnrollmentController::class, 'getEnrolledStudents']);
 
 Route::middleware('auth')->group(function () {

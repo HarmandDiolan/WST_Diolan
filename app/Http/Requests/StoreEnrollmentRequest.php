@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Enrollment;
 
 class StoreEnrollmentRequest extends FormRequest
 {
@@ -23,7 +24,22 @@ class StoreEnrollmentRequest extends FormRequest
     {
         return [
             'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id'
+            'subject_id' => 'required|exists:subjects,id',
+            // Custom validation to prevent duplicate enrollment
+            'student_id' => [
+                'required',
+                'exists:students,id',
+                function ($attribute, $value, $fail) {
+                    $subjectId = $this->input('subject_id');
+                    $existingEnrollment = Enrollment::where('student_id', $value)
+                                                    ->where('subject_id', $subjectId)
+                                                    ->exists();
+
+                    if ($existingEnrollment) {
+                        $fail('The student is already enrolled in this subject.');
+                    }
+                },
+            ],
         ];
     }
 }

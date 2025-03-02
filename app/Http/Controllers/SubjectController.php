@@ -65,7 +65,7 @@ class SubjectController extends Controller
     public function edit(Subject $subject)
     {
         return view('subject.edit',[
-            'subject' > $subject
+            'subject' => $subject
         ]);
     }
 

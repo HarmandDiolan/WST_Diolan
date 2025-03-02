@@ -22,7 +22,7 @@ class EnrollmentController extends Controller
             'studentList' => $students,
             'subjectList' => $subjects
         ]);
-        dd($subjectList);
+        dd($subjects);
     }
 
     public function enrolledStud()
@@ -35,7 +35,8 @@ class EnrollmentController extends Controller
      */
     public function create()
     {
-        //
+        $enrollments = Enrollment::all(); 
+        return view('grades.create', compact('enrollments'));
     }
 
     /**
@@ -64,27 +65,33 @@ class EnrollmentController extends Controller
     {
         $enrollments = Enrollment::whereHas('subject', function ($query) use ($sectionCode) {
             $query->where('sectionCode', $sectionCode);
-        })->with(['student', 'subject'])->get();
-    
+        })
+        ->with(['student', 'subject', 'student.grades']) // Ensure relationship is correct
+        ->get();
+        
         if ($enrollments->isEmpty()) {
             return response()->json(['students' => []]); // Return empty array if no students found
         }
     
         return response()->json([
             'students' => $enrollments->map(function ($enrollment) {
+                // Ensure grades are being loaded correctly
+                $grades = $enrollment->student->grades;
+    
+                // If no grades are found, return 'No grade'
+                $grade = $grades->firstWhere('subject_code', $enrollment->subject->subjectCode);
                 return [
                     'id' => $enrollment->student->id,
                     'name' => $enrollment->student->name,
                     'subjectCode' => $enrollment->subject->subjectCode,
                     'description' => $enrollment->subject->description,
-                    'units' => $enrollment->subject->units
+                    'units' => $enrollment->subject->units,
+                    'grade' => $grade ? $grade->grade : 'No grade', // Handle case where no grade is found
                 ];
             })
         ]);
-
-        dd($enrollments);
     }
-
+    
     /**
      * Display the specified resource.
      */

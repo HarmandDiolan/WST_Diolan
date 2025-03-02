@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubjectFactory> */
     use HasFactory;
-    
+
+    protected $table = 'subjects';
+
     protected $fillable = [
         'subjectCode',
         'sectionCode',
         'description',
-        'units'
+        'units',
     ];
 
-    public function enrollments(){
-
+    public function enrollments()
+    {
         return $this->hasMany(Enrollment::class, 'subject_id');
     }
 }

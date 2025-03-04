@@ -82,7 +82,8 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span></a>
             </li>
-
+            <!-- Only show these options if the user is an admin -->
+            @if(auth()->user()->role === 'admin')
             <li class="nav-item {{ set_active(['student']) }}" >
                 <a class="nav-link" href="{{ route('student.index') }}">
                     <i class="fas fa-fw fa-table"></i>
@@ -110,9 +111,15 @@
                     <span>Grade</span>
                 </a>
             </li>
-
-            
-
+            @endif
+            @if(auth()->user()->role === 'student')
+            <li class="nav-item " >
+                <a class="nav-link" href="{{ route('student.grades') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>GradeStudent</span>
+                </a>
+            </li>
+            @endif
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

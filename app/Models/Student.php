@@ -2,28 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'name',
         'address',
         'email',
         'age',
+        'phone',
+        'password',
+        'role',
     ];
 
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class, 'student_id');
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
+    ];
 
     public function grades()
     {
         return $this->hasMany(Grade::class, 'student_id');
     }
 }
-

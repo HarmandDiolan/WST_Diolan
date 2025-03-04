@@ -22,18 +22,23 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> 'required',
-            'address'=> 'required',
-            'email'   => 'required|email|unique:students,email',
-            'age' => 'required',
-            
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'age' => 'required|integer|min:1',
+            'password' => 'sometimes|string|min:8', // Add default password handling later
+            'role' => 'sometimes|string|in:student', // Ensure role is always 'student'
         ];
     }
+    
     protected function prepareForValidation()
     {
         $this->merge([
-            'name' => strip_tags($this -> name),
-            'address' => strip_tags($this -> address)
+            'name' => strip_tags($this->name),  // Strip any HTML tags from name
+            'address' => strip_tags($this->address),  // Strip any HTML tags from address
+            'role' => 'student',  // Ensure the role is always 'student'
+            // Handle password: If no password is provided, we will set it to 'password123'
+            'password' => $this->password ? bcrypt($this->password) : bcrypt('password123'),
         ]);
     }
 }

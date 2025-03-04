@@ -23,18 +23,17 @@ class StoreEnrollmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id' => 'required|exists:students,id',
+            'student_id' => 'required|exists:users,id,role,student', // Make sure only users with the 'student' role can enroll
             'subject_id' => 'required|exists:subjects,id',
-            // Custom validation to prevent duplicate enrollment
             'student_id' => [
                 'required',
-                'exists:students,id',
+                'exists:users,id,role,student',
                 function ($attribute, $value, $fail) {
                     $subjectId = $this->input('subject_id');
                     $existingEnrollment = Enrollment::where('student_id', $value)
-                                                    ->where('subject_id', $subjectId)
-                                                    ->exists();
-
+                        ->where('subject_id', $subjectId)
+                        ->exists();
+    
                     if ($existingEnrollment) {
                         $fail('The student is already enrolled in this subject.');
                     }

@@ -11,10 +11,10 @@ class Enrollment extends Model
 
     protected $fillable = ['student_id', 'subject_id', 'status'];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id');
-    }
+    // public function student()
+    // {
+    //     return $this->belongsTo(Student::class, 'student_id');
+    // }
 
     public function subject()
     {
@@ -24,6 +24,11 @@ class Enrollment extends Model
     public function grade()
     {
         return $this->hasOne(Grade::class, 'enrollment_id');
+    }
+    
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
     }
 }
 

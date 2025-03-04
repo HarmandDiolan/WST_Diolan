@@ -38,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($studentList as $student)
+                        @foreach($students as $student)
                         <tr>
                             <td>{{ $student->id }}</td>
                             <td>{{ $student->name }}</td>
@@ -147,20 +147,26 @@
     });
 
     $(document).ready(function() {
-        $('#addStudentForm').submit(function(e) {
-            e.preventDefault(); 
+    // CSRF token setup for AJAX requests
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+    $('#addStudentForm').submit(function(e) {
+        e.preventDefault(); 
 
-            var formData = $(this).serialize();
+        var formData = $(this).serialize();
 
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function(response) {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
+            },
+            success: function(response) {
+                // Close modal and reset form
                 $('#addStudentModal').modal('hide');
                 $('#addStudentForm')[0].reset();
-                
                 
                 // Create new row HTML using the response data
                 var newRow = '<tr>' +
@@ -185,10 +191,14 @@
 
                 // Append new row to the table body
                 $('#dataTable tbody').append(newRow);
-            }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while adding the student. Please try again.');
+                    }
+                });
             });
         });
-    });
+
 
     $(document).ready(function () {
     // Open the modal and set student ID

@@ -6,6 +6,8 @@ use App\Models\Grade;
 use App\Models\Subject;
 use App\Http\Requests\StoreGradeRequest;
 use App\Http\Requests\UpdateGradeRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class GradeController extends Controller
 {
@@ -51,9 +53,36 @@ class GradeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Grade $grade)
+    public function show($id)
     {
-        //
+        // Get the authenticated student
+        $student = auth()->guard('student')->user();
+    
+        // Debug: Check if the student is authenticated
+        if (!$student) {
+            abort(403, 'You must be logged in as a student.');
+        }
+    
+        // Debug: Check if the authenticated user is an instance of Student
+        if (!$student instanceof \App\Models\Student) {
+            abort(403, 'Invalid user type.');
+        }
+    
+        // Find the grade
+        $grade = Grade::findOrFail($id);
+    
+        // Debug: Check if the grade belongs to the student
+        if ($student->id !== $grade->student_id) {
+            abort(403, 'You do not have permission to view this grade.');
+        }
+    
+        // Authorize the action using the Gate
+        if (Gate::forUser($student)->denies('view', $grade)) {
+            abort(403, 'Unauthorized access.');
+        }
+    
+        // Return the grade as JSON
+        return response()->json($grade);
     }
 
     /**
@@ -78,5 +107,20 @@ class GradeController extends Controller
     public function destroy(Grade $grade)
     {
         //
+    }
+    public function showGrades()
+    {
+        $student = Auth::user(); // Get the currently authenticated user (student)
+    
+        // Fetch the grades related to the student
+        $grades = $student->grades; // Assuming 'grades' is a relationship on the User model
+    
+        // Check if grades are available before passing to the view
+        if (!$grades) {
+            // If no grades, set an empty collection
+            $grades = collect();
+        }
+    
+        return view('index', compact('grades'));
     }
 }

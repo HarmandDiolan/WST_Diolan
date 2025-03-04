@@ -22,14 +22,14 @@ class StoreGradeRequest extends FormRequest
     public function rules(): array
 {
     return [
-        'studentId' => 'required|exists:students,id',
+        'studentId' => 'required|exists:users,id',
         'subjectCode' => 'required|exists:subjects,subjectCode',
         'sectionCode' => 'required|exists:subjects,sectionCode',
         'grade' => 'required|numeric|in:1.00,1.25,1.50,1.75,2.00,2.25,2.50,2.75,3.00,3.25,3.50,3.75,4.00,4.25,4.50,4.75,5.00',
         // Custom validation to check if grade already exists
         'studentId' => [
             'required',
-            'exists:students,id',
+            'exists:users,id',
             function ($attribute, $value, $fail) {
                 $subjectCode = $this->input('subjectCode');
                 $existingGrade = Grade::where('student_id', $value)
@@ -42,5 +42,10 @@ class StoreGradeRequest extends FormRequest
         ],
     ];
 }
-
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'grade' => floatval($this->grade), // Ensure it's treated as a float
+        ]);
+    }
 }

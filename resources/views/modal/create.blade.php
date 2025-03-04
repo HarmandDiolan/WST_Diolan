@@ -22,8 +22,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="addStudentAge" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="addStudentage" name="age" required>
+                        <input type="number" class="form-control" id="addStudentAge" name="age" required>
                     </div>
+                    <!-- Hidden Fields -->
+                    <input type="hidden" name="role" value="student">
+                    <input type="hidden" name="password" value="password123">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

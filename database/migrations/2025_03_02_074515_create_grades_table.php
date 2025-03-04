@@ -18,7 +18,13 @@ return new class extends Migration
             $table->string('subject_code');
             $table->decimal('grade', 5, 2);
             $table->timestamps();
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+
+            // Foreign key to users table for student_id
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Foreign key for user (the one assigning the grade)
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

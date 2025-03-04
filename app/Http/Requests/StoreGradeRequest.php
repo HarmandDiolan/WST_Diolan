@@ -45,7 +45,7 @@ class StoreGradeRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'grade' => floatval($this->grade), // Ensure it's treated as a float
+            'grade' => (float) $this->grade,  // Ensure it's treated as a float
         ]);
     }
 }

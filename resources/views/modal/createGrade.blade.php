@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="addGradeModalGrade" class="form-label">Grade</label>
-                        <input type="number" class="form-control" id="addGradeModalGrade" name="grade" required>
+                        <input type="number" class="form-control" id="addGradeModalGrade" name="grade" required  step="0.01">
                     </div>
                     <input type="hidden" id="studentId" name="studentId"> <!-- Hidden student ID -->
                     <input type="hidden" id="subjectCode" name="subjectCode"> <!-- Hidden subject code -->

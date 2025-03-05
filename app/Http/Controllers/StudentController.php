@@ -19,7 +19,7 @@ class StudentController extends Controller
         $students = User::where('role', 'student')->get();  // This is fetching users with role 'student'
         
         // Fetching all students from the Student model for other information
-        $studentList = Student::all();
+        $studentList = User::all();
         $subjectList = Subject::all();
 
         return view('admin.student.students', [
@@ -78,7 +78,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(User $student)
     {
         if (request()->expectsJson()) {
             return response()->json($student);
@@ -102,7 +102,7 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(UpdateStudentRequest $request, User $student)
     {
         $student->update($request->validated());
 
@@ -117,7 +117,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(User $student)
     {
         $student->delete();
 
